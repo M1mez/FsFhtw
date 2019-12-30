@@ -13,7 +13,7 @@
   
  Create Sudokus:
 	http://www.sudokuessentials.com/create-sudoku.html
- 
+	
  
  Planned Architecture:
 	ScreenDrawing.fs 					// (Ins Terminal zeichnen)
@@ -23,6 +23,33 @@
 	SudokuLogic.fs						
  
  
+ Domain:
+ 
+	type Board =
+		List<Cell> //?
+		
+	type Cell =
+		pos: Position
+		state: CellState
+		
+	type CellState =
+		| ConstrainedNumber
+		| Empty
+		
+	type Position
+		| horizontalPos
+		| verticalPos
+		
+	type horizontalPos: int
+	type verticalPos: int
+	
+	
+	
+	
+		
+	
+		
+	
  
  
  
