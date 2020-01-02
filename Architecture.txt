@@ -26,8 +26,12 @@
  Domain:
  
 	type Board =
-		List<Cell> //?
-		
+		List<Area> //?
+
+	type Area =
+		pos: Position
+		cells: List<Cell>		
+
 	type Cell =
 		pos: Position
 		state: CellState
