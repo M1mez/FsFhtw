@@ -19,8 +19,11 @@ let update (msg: Message) (model: State): State =
 
 
 // Sudoku
-
-type SudokuSize = int
+[<AbstractClass; Sealed>]
+type SudokuSize = {
+    value: int
+    root: int
+}
 
 type Position = int * int
 
@@ -38,4 +41,7 @@ type Area =
     { pos: Position
       cells: List<Cell> }
 
-type BoardState = List<Area>
+type Board = {
+    grid: List<Area>
+    static member size: SudokuSize
+}
