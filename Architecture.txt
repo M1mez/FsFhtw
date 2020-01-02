@@ -20,9 +20,9 @@
 	GridData.fs							// (1x Grid vom fertigen Sudoku/Lösung, 1x Grid vom User-Input)
 		CreateValidSudoku (int size) 	// (logische Regeln (1x Zahl pro Row und Column und Box))
 			ProvideHints (int 5)		// (Sinnvolle Nummern voreintragen)
-	SudokuLogic.fs						
- 
- 
+	SudokuLogic.fs		
+	
+
  Domain:
  
 	type Board =
@@ -49,7 +49,12 @@
 	
 	
 	
-	
+	 
+ Init GameBoard:
+    areas -> makeBoard -> board
+    cells -> makeAreas -> areas
+    numbers -> makeCells -> cells
+ 
 		
 	
 		
