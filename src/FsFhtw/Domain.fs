@@ -1,5 +1,6 @@
 module Domain
-open Logic 
+
+open Logic
 open System.Diagnostics.CodeAnalysis
 
 type State = int
@@ -18,44 +19,71 @@ let update (msg: Message) (model: State): State =
     | Decrement -> model - 1
     | IncrementBy x -> model + x
     | DecrementBy x -> model - x
-
+// ---------------------------------------------------------------------------
 
 // Sudoku
 let sudokuSize: int = 9
 let rootSize: int = 3
 
-type Position = int * int
+type RowPos =
+    | LEFT = 0
+    | MIDDLE = 1
+    | RIGHT = 2
 
-type CellState = int option
+type ColPos =
+    | UP = 0
+    | MIDDLE = 1
+    | DOWN = 2
 
-type Cell() =
-    let mutable state: CellState = None
-    member __.State with get() : CellState = state and set(value) = state <- value
-    member __.AsString() : string = 
-        match state with 
-        | None -> " "
-        | _ -> string state.Value
+type Position = RowPos * ColPos
 
-type Area() =
-    let cells: List<Cell * Position> = List.map (fun x -> (Cell(), x)) (CreateGrid(rootSize))
-    override __.ToString() = 
-        let mutable str = ""
-        for i in cells do
-            str <- str + ((fst i).AsString())
-        str
+type OuterPosition = Position
 
-    member __.ContainsNum(num: int) :bool =
-        List.map (fun (x: Cell * Position) -> Option.defaultValue -1 ((fst x).State)) cells
-        |> List.contains num
+type InnerPosition = Position
 
-type Board() = 
-    let mutable grid: List<Area * Position> = None
-    member __.Inititialize() = grid <- List.map (fun x -> (Area(), x)) (CreateGrid(rootSize))
-    let Board() = _.Inititialize()
-    member __.PrintBoard() = 
-        for el in grid do
-            let str = fst el |> string
-            printf "%s\n" str
+type Grid<'a> = List<'a * Position>
+
+type CellState =
+    | One = 1
+    | Two = 2
+    | Three = 3
+    | Four = 4
+    | Five = 5
+    | Six = 6
+    | Seven = 7
+    | Eight = 8
+    | Nine = 9
+    | Empty = 0
+
+type Cell =
+    { outerPosition: OuterPosition
+      innerPosition: InnerPosition
+      State: CellState }
+
+type Area = Grid<Cell>
+
+type Board = Grid<Area>
+
+type CreateArea = OuterPosition * List<InnerPosition> -> Area
+
+type CreateBoard = List<OuterPosition> -> Board
 
 
+let bind nextFunction optionInput =
+    match optionInput with
+    | Some s -> nextFunction s
+    | None -> None
 
+
+//generate valid value for cell
+type GenerateRandomCellValue = Unit -> int
+
+//check area for cell value validity
+type CheckAreaValidity = int -> int option
+//check row for cell value validity
+type CheckRowValidity = int -> int option
+//check col for cell value validity
+type CheckColValidity = int -> int option
+
+// add number to cell
+type FillInCellValue = Board * int -> Board

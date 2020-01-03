@@ -54,8 +54,11 @@
     areas -> makeBoard -> board
     cells -> makeAreas -> areas
     numbers -> makeCells -> cells
- 
-		
+
+	add number to cell
+	check area for cell value validity
+	check row for cell value validity
+	check col for cell value validity	
 	
 		
 	
