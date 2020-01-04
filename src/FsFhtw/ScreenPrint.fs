@@ -39,14 +39,14 @@ let PrintBoard(board: Board): Unit =
     // List.map (fun x -> printfn (x)) lineValues |> ignore
 
     let printLine (line: int) =
-        // List.map (fun x -> (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)) |> PrintCellWithPos) [ 0 .. 8 ]
-        // |> ignore
+        //     List.map (fun x -> (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)) |> PrintCellWithPos)
+        //         [ 0 .. (sudokuSize - 1) ] |> ignore
 
         List.map (fun x -> printf "%i" (int (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)).State))
-            [ 0 .. 8 ] |> ignore
+            [ 0 .. (sudokuSize - 1) ] |> ignore
         printfn " "
 
-    List.map printLine [ 1 .. 9 ] |> ignore
+    List.map printLine [ 1 .. sudokuSize ] |> ignore
 
 
 // let PrintBoard(board: Board) : Unit =

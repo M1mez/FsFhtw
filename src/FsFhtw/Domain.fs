@@ -21,8 +21,8 @@ let update (msg: Message) (model: State): State =
 // ---------------------------------------------------------------------------
 
 // Sudoku
-let sudokuSize: int = 9
-let rootSize: int = 3
+let sudokuSize: int = 4
+let rootSize: int = 2
 
 type RowPos =
     | LEFT = 0

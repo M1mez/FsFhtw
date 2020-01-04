@@ -1,4 +1,5 @@
-﻿open Logic
+﻿
+open Logic
 open Domain
 open ScreenPrint
 
@@ -11,10 +12,10 @@ let main argv =
 
     // let initialState = Domain.init ()
     // Repl.loop initialState
- 
-    CreateBoard()
-    |> PopulateBoard
-    |> PrintBoard
+
+    let board = CreateBoard() |> PopulateBoard
+    PrintBoard board
+    printfn " "
 
 
     0 // return an integer exit code

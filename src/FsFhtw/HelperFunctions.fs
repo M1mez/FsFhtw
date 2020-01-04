@@ -10,7 +10,7 @@ let bind nextFunction (optionInput: 'a option): 'a option =
     | Some s -> nextFunction s
     | None -> None
 
-let GenerateRandomIntInRange(upper: int): int = rnd.Next(upper - 1) + 1
+let GenerateRandomIntInRange(upper: int): int = rnd.Next(upper) + 1
 
 let IndexToPosition(i: int): Position = Position(enum (i / rootSize), enum (i % rootSize))
 

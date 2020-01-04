@@ -16,7 +16,7 @@ let GetCellFromIndex(index: int, board: Board): Cell =
 
 let CreateGrid(rootSize: int): List<Position> =
     let intToPositionWithRoot = IndexToPosition
-    List.map intToPositionWithRoot [ 0 .. 8 ]
+    List.map intToPositionWithRoot [ 0 .. (sudokuSize - 1) ]
 
 let CreateArea(outerPos: OuterPosition): Area =
     let createCellWithPos (innerPos: InnerPosition): Cell * Position =
