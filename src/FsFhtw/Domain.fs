@@ -1,6 +1,5 @@
 module Domain
 
-open Logic
 open System.Diagnostics.CodeAnalysis
 
 type State = int
@@ -35,6 +34,11 @@ type ColPos =
     | MIDDLE = 1
     | DOWN = 2
 
+type Dimension =
+    | Row of RowPos
+    | Col of ColPos
+
+
 type Position = RowPos * ColPos
 
 type OuterPosition = Position
@@ -56,34 +60,34 @@ type CellState =
     | Empty = 0
 
 type Cell =
-    { outerPosition: OuterPosition
-      innerPosition: InnerPosition
+    { OuterPos: OuterPosition
+      InnerPos: InnerPosition
       State: CellState }
 
 type Area = Grid<Cell>
 
 type Board = Grid<Area>
 
-type CreateArea = OuterPosition * List<InnerPosition> -> Area
+type CreateArea = OuterPosition -> Area
 
-type CreateBoard = List<OuterPosition> -> Board
+type CreateBoard = Unit -> Board
 
+type PopulateBoard = Board -> Board
 
-let bind nextFunction optionInput =
-    match optionInput with
-    | Some s -> nextFunction s
-    | None -> None
+type PrintBoard = Board -> Unit
 
 
 //generate valid value for cell
 type GenerateRandomCellValue = Unit -> int
 
-//check area for cell value validity
-type CheckAreaValidity = int -> int option
-//check row for cell value validity
-type CheckRowValidity = int -> int option
-//check col for cell value validity
-type CheckColValidity = int -> int option
+
+// //check area for cell value validity
+// type CheckAreaValidity = Board * Cell -> Cell option
+// //check row for cell value validity
+// type CheckRowValidity = Board * Cell -> Cell option
+// //check col for cell value validity
+// type CheckColValidity = Board * Cell -> Cell option
+
 
 // add number to cell
-type FillInCellValue = Board * int -> Board
+type FillInCellValue = Board * Cell -> Board

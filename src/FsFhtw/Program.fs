@@ -1,5 +1,4 @@
 ﻿open Logic
-open Domain
 
 [<EntryPoint>]
 let main argv =
@@ -11,9 +10,9 @@ let main argv =
     // let initialState = Domain.init ()
     // Repl.loop initialState
 
-    let b = Board()
-    b.PrintBoard()
-
+    CreateBoard()
+    |> PopulateBoard
+    |> PrintBoard
 
 
     0 // return an integer exit code
