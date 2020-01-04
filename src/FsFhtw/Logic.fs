@@ -3,10 +3,19 @@ module Logic
 open Domain
 open HelperFunctions
 
-let intToPosition (rootSize: int) (i: int): Position = Position(enum (i / rootSize), enum (i % rootSize))
+
+let GetCellFromIndex(index: int, board: Board): Cell =
+    let absolutePos = IndexToAbsolutePosition index
+    let outerPos = fst absolutePos
+    let innerPos = snd absolutePos
+
+    let area = List.find (fun x -> snd x = outerPos) board
+    let cell = List.find (fun x -> snd x = innerPos) (fst area)
+
+    fst cell
 
 let CreateGrid(rootSize: int): List<Position> =
-    let intToPositionWithRoot = intToPosition rootSize
+    let intToPositionWithRoot = IndexToPosition
     List.map intToPositionWithRoot [ 0 .. 8 ]
 
 let CreateArea(outerPos: OuterPosition): Area =
@@ -26,7 +35,7 @@ let CreateBoard(): Board =
         (area, outerPos)
     List.map createAreaPosTuple positions
 
-let checkForDuplicate (cells: List<Cell>, cell: Cell): Cell option =
+let CheckForDuplicate(cells: List<Cell>, cell: Cell): Cell option =
     let equalCellValue (other: Cell): bool = other.State = cell.State
     let duplicates = List.where equalCellValue cells
     match duplicates.Length with
@@ -35,25 +44,25 @@ let checkForDuplicate (cells: List<Cell>, cell: Cell): Cell option =
 
 let CheckAreaValidity (area: Area) (cell: Cell) =
     let cellList = List.map fst area
-    checkForDuplicate (cellList, cell)
+    CheckForDuplicate(cellList, cell)
 
 let CheckDimValidity(board: Board, cell: Cell, dimFunction) =
-    let areaRow =
+    let areaLine =
         board
         |> List.where (fun (x: Area * OuterPosition) -> (dimFunction (snd x)) = dimFunction cell.OuterPos)
         |> List.map fst
 
-    let getCellsInRow (area: Area): List<Cell> =
+    let getCellsInLine (area: Area): List<Cell> =
         area
         |> List.map fst
         |> List.where (fun x -> dimFunction x.InnerPos = dimFunction cell.InnerPos)
 
-    let row =
-        areaRow
-        |> List.map getCellsInRow
+    let line =
+        areaLine
+        |> List.map getCellsInLine
         |> List.collect id
 
-    checkForDuplicate (row, cell)
+    CheckForDuplicate(line, cell)
 
 let CheckRowValidity (board: Board) (cell: Cell) = CheckDimValidity(board, cell, fst)
 
@@ -74,7 +83,6 @@ let PopulateArea(area: Area, board: Board): Area =
         match cell with
         | Some c -> c, c.InnerPos
         | None -> fillCell currCell
-
     List.map (fst >> fillCell) area
 
 let PopulateBoard(board: Board): Board =

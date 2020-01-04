@@ -1,4 +1,6 @@
 ﻿open Logic
+open Domain
+open ScreenPrint
 
 [<EntryPoint>]
 let main argv =
@@ -9,7 +11,7 @@ let main argv =
 
     // let initialState = Domain.init ()
     // Repl.loop initialState
-
+ 
     CreateBoard()
     |> PopulateBoard
     |> PrintBoard
