@@ -47,17 +47,17 @@ let CheckAreaValidity (area: Area) (cell: Cell) =
     let cellList = List.map fst area
 
     //delete
-    let states = List.map(fun x -> (int) x.State) cellList
+    let states = List.map (fun x -> (int) x.State) cellList
     printf "List to check dupes against: "
-    states |> Seq.iter(printf "%i ")
+    states |> Seq.iter (printf "%i ")
 
     CheckForDuplicate(cellList, cell)
 
 //delete
-let PrintArea(area: Area) : Unit =
-    let cells = List.map(fst) area
-    let states = List.map(fun x -> (int) x.State) cells
-    states |> Seq.iter(printf "%i ")
+let PrintArea(area: Area): Unit =
+    let cells = List.map (fst) area
+    let states = List.map (fun x -> (int) x.State) cells
+    states |> Seq.iter (printf "%i ")
     printf "\n"
 
 let CheckDimValidity(board: Board, cell: Cell, dimFunction): Cell option =
@@ -91,57 +91,57 @@ let ChangeCellValue(cell: Cell): Cell =
       InnerPos = cell.InnerPos }
 
 
-        // let newArea = 
-        //     area
-        //     |> List.map fst
-        //     |> List.map changeArea
-        // newArea
+// let newArea =
+//     area
+//     |> List.map fst
+//     |> List.map changeArea
+// newArea
 
 let rec fillCell (area: Area, board: Board) (currCell: Cell): Cell * Position =
-    let cell =
-        Some(ChangeCellValue(currCell))
-        |> bind (CheckAreaValidity area)
-        // |> bind (CheckRowValidity board)
-        // |> bind (CheckColValidity board)
+    let cell = Some(ChangeCellValue(currCell)) |> bind (CheckAreaValidity area)
+    // |> bind (CheckRowValidity board)
+    // |> bind (CheckColValidity board)
 
     match cell with
-     | Some c -> (c, c.InnerPos) 
-     | None -> (fillCell (area, board) currCell)
+    | Some c -> (c, c.InnerPos)
+    | None -> (fillCell (area, board) currCell)
 
 let PopulateArea (board: Board) (area: Area): Area =
-    let updateCellWithPos(index: int, func, area: Area): Area =
-        if (index = sudokuSize) then area
-        else 
-            let pos = IndexToPosition index
-            let changeArea = (fun (x:Cell) -> if x.InnerPos = pos then func x else x, x.InnerPos)
-            List.map (fst >> changeArea) area
-            
-    let rec populateNextCell(index: int) (a: Area) =
-        updateCellWithPos(index, (fillCell(a, board)), a)
-        |> (populateNextCell (index + 1))
+    let updateCellWithPos (index: int, func, area: Area): Area =
+        let pos = IndexToPosition index
 
-    populateNextCell 0 area 
+        let changeArea =
+            (fun (x: Cell) -> if x.InnerPos = pos then func x else x, x.InnerPos)
+        List.map (fst >> changeArea) area
+
+    let rec populateNextCell (index: int) (a: Area) =
+        if (index = sudokuSize)
+        then a
+        else updateCellWithPos (index, (fillCell (a, board)), a) |> (populateNextCell (index + 1))
+
+    populateNextCell 0 area
 
 let PopulateAreaNOT (board: Board) (area: Area): Area =
     let currentCell =
         { State = CellState.Empty
           OuterPos = RowPos.LEFT, ColPos.UP
-          InnerPos = RowPos.LEFT, ColPos.UP } 
+          InnerPos = RowPos.LEFT, ColPos.UP }
+
     let filledCell = (fillCell (area, board) currentCell)
     //append correct cell to area
     //do again for next cell in area == do again for next innerpos
     //-> iterate implicitly over innerpositions
-    
+
 
 
     area
 
 
-    
-    // area
-    //     |> List.map fst
-    //     |> List.map (fun x -> fillCell(x))
-    // List.map (fst >> fillCell) area"
+
+// area
+//     |> List.map fst
+//     |> List.map (fun x -> fillCell(x))
+// List.map (fst >> fillCell) area"
 
 
 
@@ -164,7 +164,7 @@ let PopulateAreaNOT (board: Board) (area: Area): Area =
 //             // |> bind (CheckRowValidity board)
 //             // |> bind (CheckColValidity board)
 //         if (cell = None) then printfn "cell was none"
-//         if (cell.IsSome) then 
+//         if (cell.IsSome) then
 //             printfn "State: %i" (int (cell.Value.State))
 //             printfn "Inner: R%iC%i" (int (fst cell.Value.InnerPos)) (int (snd cell.Value.InnerPos))
 //             printfn "Outer: R%iC%i" (int (fst cell.Value.OuterPos)) (int (snd cell.Value.OuterPos))
