@@ -17,7 +17,30 @@ let PrintCellWithPos(cell: Cell): Unit =
         (snd absolutePos |> int) (fst cell.OuterPos |> int) (snd cell.OuterPos |> int) (fst cell.InnerPos |> int)
         (snd cell.InnerPos |> int)
 
+let PrintArea(area: Area) : Unit =
+    let cells = List.map(fst) area
+    let states = List.map(fun x -> (int) x.State) cells
+    states |> Seq.iter(printf "%i ")
+    printf "\n"
 
+let PrintArea2(area: Area) : Unit =
+    let cells = List.map(fst) area
+    // printf " ---------"
+    let printAreaRow(row: List<Cell>) = 
+        printf "\n ---------\n| " 
+        List.iter (fun x -> printf "%i|" (int x.State)) row 
+    let getAreaRow(rowIndex: int) = 
+        List.where (fun x -> int (fst x.InnerPos) = rowIndex) cells
+    [0 .. rootSize - 1]
+        |> List.map getAreaRow
+        |> List.iter printAreaRow 
+    printfn ""
+    
+
+let PrintBoardSimple(board: Board) : Unit =
+    let areas = List.map fst board
+    List.iter(PrintArea) areas
+    List.iter(PrintArea2) areas
 
 let PrintBoard(board: Board): Unit =
     // let areasInLine =
@@ -42,7 +65,7 @@ let PrintBoard(board: Board): Unit =
         //     List.map (fun x -> (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)) |> PrintCellWithPos)
         //         [ 0 .. (sudokuSize - 1) ] |> ignore
 
-        List.map (fun x -> printf "%i" (int (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)).State))
+        List.map (fun x -> printf "%i " (int (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)).State))
             [ 0 .. (sudokuSize - 1) ] |> ignore
         printfn " "
 

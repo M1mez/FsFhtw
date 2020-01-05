@@ -1,16 +1,13 @@
 module SudokuTest
 
-
+// open Swensen.Unquote
 open FsUnit.Xunit
 open Xunit
+open Xunit.Abstractions
 open Logic
 open Domain
+open ScreenPrint
 
-[<Fact>]
-let testTests() = "hallo" |> should equal "hallo"
-
-let board = CreateBoard()
-let area = CreateArea(OuterPosition(Position(RowPos.LEFT, ColPos.UP)))
 
 let cell1 =
     { State = CellState.One
@@ -58,75 +55,73 @@ let cell9 =
       InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
 
 
-
-
-
-let cells = [ cell1; cell2]
-
-
 [<Fact>]
 let testCheckIsDuplicateValue() =
+    let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7;cell8;cell9]
     let result = CheckForDuplicate(cells, cell2)
+    Assert.True(result.IsNone)
+    let result = CheckForDuplicate(cells, cell7)
+    Assert.True(result.IsNone)
+    let result = CheckForDuplicate(cells, cell8)
+    Assert.True(result.IsNone)
+    let result = CheckForDuplicate(cells, cell9)
     Assert.True(result.IsNone)
 
 [<Fact>] 
 let testCheckIsNotDuplicateValue() = 
-    let result = CheckForDuplicate(cells, cell3)
-    Assert.Equal(result.Value, cell3)
+    let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7]
 
-// [<Fact>]
-// let testCheckAreaForInvalidCell() = 
-//     ((fst (area.Item 1)).State) = CellState.One
-//     ((fst (area.Item 2)).State) = CellState.Two
-//     ((fst (area.Item 3)).State) = CellState.Three
-//     ((fst (area.Item 4)).State) = CellState.Four
-//     ((fst (area.Item 5)).State) = CellState.Five
-//     ((fst (area.Item 6)).State) = CellState.One
-//     ((fst (area.Item 7)).State) = CellState.One
-//     ((fst (area.Item 8)).State) = CellState.One
-//     ((fst (area.Item 9)).State) = CellState.One
+    let result = CheckForDuplicate(cells, cell8)
+    Assert.Equal(result.Value, cell8)
 
-//     let areavalidity = CheckAreaValidity area cell1
-//     Assert.True(areavalidity.IsNone)
+    let result = CheckForDuplicate(cells, cell9)
+    Assert.Equal(result.Value, cell9)
 
-// [<Fact>]
-// let testCheckAreaForValidCell() =
-//     ((fst (area.Item 1)).State) = CellState.Two
-//     ((fst (area.Item 2)).State) = CellState.Two
-//     ((fst (area.Item 3)).State) = CellState.Three
-//     ((fst (area.Item 4)).State) = CellState.Four
-//     ((fst (area.Item 5)).State) = CellState.Five
-//     ((fst (area.Item 6)).State) = CellState.Two
-//     ((fst (area.Item 7)).State) = CellState.Two
-//     ((fst (area.Item 8)).State) = CellState.Two
-//     ((fst (area.Item 9)).State) = CellState.Two
-
-//     let areavalidity = CheckAreaValidity area cell1
-//     Assert.Equal(areavalidity.Value, cell1)
+    let result = CheckForDuplicate(cells, cell1)
+    Assert.True(result.IsNone)
 
 [<Fact>]
-let testCheckAreaStepwise() = 
+let testCheckAreaValidityStepwise() = 
+    let board = CreateBoard()
+    let partialPopulateArea = PopulateArea board
+    let area = 
+      CreateArea(OuterPosition(Position(RowPos.LEFT, ColPos.UP)))
+      |> partialPopulateArea
 
     let checkedCell = CheckAreaValidity area cell1
-    Assert.Equal(checkedCell.Value, cell1)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell2
-    Assert.Equal(checkedCell.Value, cell2)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell3
-    Assert.Equal(checkedCell.Value, cell3)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell4
-    Assert.Equal(checkedCell.Value, cell4)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell5
-    Assert.Equal(checkedCell.Value, cell5)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell6
-    Assert.Equal(checkedCell.Value, cell6)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell7
-    Assert.Equal(checkedCell.Value, cell7)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell8
-    Assert.Equal(checkedCell.Value, cell8)
+    Assert.True(checkedCell.IsNone)
     let checkedCell = CheckAreaValidity area cell9
-    Assert.Equal(checkedCell.Value, cell9)
+    Assert.True(checkedCell.IsNone)
 
-    let checkedCell = CheckAreaValidity area cell1
+[<Fact>]
+let testCheckRowValidity() =
+    let board = PopulateBoard (CreateBoard()) 
+    let checkedCell = CheckRowValidity board cell1
     Assert.True(checkedCell.IsNone)
-    let checkedCell = CheckAreaValidity area cell7
-    Assert.True(checkedCell.IsNone)
+    
+
+
+
+
+
+
+type SudokuTestsTry(output: ITestOutputHelper) =
+  [<Fact>]
+  member __.``SomeFunction should return 10`` () =
+        let a = (fun () -> 10)
+        output.WriteLine("Some funcASDASDKJHASKFJBAGJABKGBAJDBAJKSDBKJBASKJDBKJASBJKDBKASJBDKJABSDKJBASKJDBKJASBKDJBJKASBKDJBASKJDBtion returned {0}", a)
+        Assert.True(true)
