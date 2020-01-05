@@ -2,44 +2,25 @@ module Domain
 
 open System.Diagnostics.CodeAnalysis
 
-type State = int
-
-type Message =
-    | Increment
-    | Decrement
-    | IncrementBy of int
-    | DecrementBy of int
-
-let init(): State = 0
-
-let update (msg: Message) (model: State): State =
-    match msg with
-    | Increment -> model + 1
-    | Decrement -> model - 1
-    | IncrementBy x -> model + x
-    | DecrementBy x -> model - x
-// ---------------------------------------------------------------------------
-
-// Sudoku
 let rootSize: int = 3
 let sudokuSize: int = rootSize * rootSize
 
-type RowPos =
-    | LEFT = 0
-    | MIDDLE = 1
-    | RIGHT = 2
+// type RowPos =
+//     | LEFT = 0
+//     | MIDDLE = 1
+//     | RIGHT = 2
 
-type ColPos =
-    | UP = 0
-    | MIDDLE = 1
-    | DOWN = 2
+// type ColPos =
+//     | UP = 0
+//     | MIDDLE = 1
+//     | DOWN = 2
 
-type Dimension =
-    | Row of RowPos
-    | Col of ColPos
+// type Dimension =
+//     | Row of RowPos
+//     | Col of ColPos
 
 
-type Position = RowPos * ColPos
+type Position = int * int
 
 type OuterPosition = Position
 

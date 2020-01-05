@@ -15,11 +15,10 @@
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="HelperFunctions.fs" />
+    <Compile Include="CreateLogic.fs" />
     <Compile Include="Logic.fs" />
     <Compile Include="ScreenPrint.fs" />
     <Compile Include="UserInteraction.fs" />
-    <Compile Include="Parser.fs" />
-    <Compile Include="Repl.fs" />
     <Compile Include="SudokuTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

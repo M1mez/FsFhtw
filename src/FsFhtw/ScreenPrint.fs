@@ -3,6 +3,7 @@ module ScreenPrint
 open Domain
 open System.Console
 open HelperFunctions
+open Logic
 
 // let PrintCell(cell: Cell, pos: InnerPosition): Unit =
 // printf "%i" int(cell.State)
@@ -16,6 +17,16 @@ let PrintCellWithPos(cell: Cell): Unit =
     printfn "%i ---Absolute: R%iC%i --- Outer: R%iC%i --- Inner: R%iC%i" (int cell.State) (fst absolutePos |> int)
         (snd absolutePos |> int) (fst cell.OuterPos |> int) (snd cell.OuterPos |> int) (fst cell.InnerPos |> int)
         (snd cell.InnerPos |> int)
+
+
+// let PrintAreaLine(lst: List<Area>) =
+//     let printCellLine(rowIndex: int) : List<Cell> =
+//          printf "|"
+//          lst
+//          |> List.map (fun x -> int(fst x.) = rowIndex)
+//          |> List.iter (fun x -> (printf "%i" (int x.State)))
+
+//     ()
 
 let PrintArea(area: Area) : Unit =
     let cells = List.map(fst) area
@@ -37,82 +48,23 @@ let PrintArea2(area: Area) : Unit =
     printfn ""
     
 
-let PrintBoardSimple(board: Board) : Unit =
+let PrintBoardWithAreasAsRows(board: Board) : Unit =
     let areas = List.map fst board
     List.iter(PrintArea) areas
-    List.iter(PrintArea2) areas
+    // List.iter(PrintArea2) areas
 
-let PrintBoard(board: Board): Unit =
-    // let areasInLine =
-    //     board
-    //     |> List.where (fun (x: Area * OuterPosition) -> (fst (snd x)) = line)
-    //     |> List.map fst
-    // let getCellsInLine (area: Area): List<Cell> =
-    //     area
-    //     |> List.map fst
-    //     |> List.where (fun x -> fst x.InnerPos = line)
-
-    // let line =
-    //     areasInLine
-    //     |> List.map getCellsInLine
-    //     |> List.collect id
-
-    // let lineValues = List.map (fun x -> int x.CellState) line
-
-    // List.map (fun x -> printfn (x)) lineValues |> ignore
-
-    let printLine (line: int) =
+let printLine (board: Board) (line: int) =
         //     List.map (fun x -> (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)) |> PrintCellWithPos)
         //         [ 0 .. (sudokuSize - 1) ] |> ignore
-
-        List.map (fun x -> printf "%i " (int (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)).State))
+        let getCellValueFromIndexPA(x: int) =
+            (int (GetCellFromIndex((line * sudokuSize + x), board)).State)
+        
+        List.map (fun x -> ((getCellValueFromIndexPA) >> (printf "%i ")) x )
             [ 0 .. (sudokuSize - 1) ] |> ignore
         printfn " "
 
-    List.map printLine [ 1 .. sudokuSize ] |> ignore
-
-
-// let PrintBoard(board: Board) : Unit =
-
-
-
-
-
-
-//Cell
-
-// member __.State
-//     with get (): CellState = state
-//     and set (value) = state <- value
-
-// member __.AsString(): string =
-//     match state with
-//     | None -> " "
-//     | _ -> string state.Value
-
-
-
-//Area
-
-// type Area() =
-//     let cells: Grid<CellState> =
-//         (CreateGrid(rootSize))
-//         |> List.map (fun (x: Position) -> (CellState.Empty, x))
-
-//     // override __.ToString() =
-//     //     let mutable str = ""
-//     //     for i in cells do
-//     //         str <- str + ((fst i).AsString())
-//     //     str
-
-//     member __.ContainsNum(num: int): bool =
-//         List.map (fun (x: Cell * Position) -> Option.defaultValue -1 ((fst x).State)) cells |> List.contains num
-
-//Board
-// let mutable grid: List<Area * Position>
-// let Board() = __.Inititialize()
-// member __.Inititialize() = grid <- List.map (fun x -> (Area(), x)) (CreateGrid(rootSize))
-// member __.PrintBoard() =
-//     for el in grid do
-//         let str = fst el |> string
-//         printf "%s\n" str
+let PrintBoard(board: Board): Unit =
+    // let lineValues = List.map (fun x -> int x.CellState) line
+    // List.map (fun x -> printfn (x)) lineValues |> ignore
+    let printLinePA = printLine board
+    List.map printLinePA [ 0 .. sudokuSize - 1 ] |> ignore

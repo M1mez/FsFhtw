@@ -1,34 +1,34 @@
-﻿
+﻿open CreateLogic
 open Logic
 open Domain
 open ScreenPrint
 
+
+let cell1 =
+    { State = CellState.One
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
+
 [<EntryPoint>]
 let main argv =
-    // printfn "Welcome to the FHTW Domain REPL!"
-    // printfn "Please enter your commands to interact with the system."
-    // printfn "Press CTRL+C to stop the program."
-    // printf "> "
-
-    // let initialState = Domain.init ()
-    // Repl.loop initialState
-
-    // let board = CreateBoard() |> PopulateBoard
+    let board = CreateBoard() |> PopulateBoard
     //in the shadows!
-    let board = CreateBoard()
-    let partialPopulateArea = PopulateArea board
-    let area = 
-      CreateArea(OuterPosition(Position(RowPos.LEFT, ColPos.UP)))
-      |> partialPopulateArea
+    // let board = CreateBoard()
+    // let partialPopulateArea = PopulateArea board
+    // let area = 
+    //   CreateArea(OuterPosition(Position(0, 0)))
+    //   |> partialPopulateArea
 
+    printfn "\n######################################################"
+    // printfn "\nArea: "
+    // PrintArea area |> ignore
+    printfn "\nPrint Board with real Areas:"
+    PrintBoard board    
+    // printf "\nPrint Board with Areas as Rows: \n"
+    // PrintBoardWithAreasAsRows board
     printfn "######################################################"
-    printfn "\nArea: "
-    PrintArea area |> ignore
-    // printfn "\nBoard: "
-    // PrintBoard board    
-    // printf "\nSimple Board: \n"
-    // PrintBoardSimple board
-    printfn "######################################################"
+
+
 
     // CreateBoard()
     //     |> PopulateBoard

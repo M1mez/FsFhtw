@@ -7,52 +7,53 @@ open Xunit.Abstractions
 open Logic
 open Domain
 open ScreenPrint
+open CreateLogic
 
 
 let cell1 =
     { State = CellState.One
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell2 =
     { State = CellState.Two
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell3 =
     { State = CellState.Three
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell4 =
     { State = CellState.Four
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell5 =
     { State = CellState.Five
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell6 =
     { State = CellState.Six
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell7 =
     { State = CellState.Seven
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell8 =
     { State = CellState.Eight
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 let cell9 =
     { State = CellState.Nine
-      OuterPos = OuterPosition(Position(RowPos.LEFT, ColPos.UP))
-      InnerPos = InnerPosition(Position(RowPos.LEFT, ColPos.UP)) }
+      OuterPos = OuterPosition(Position(0, 0))
+      InnerPos = InnerPosition(Position(0, 0)) }
 
 
 [<Fact>]
@@ -85,7 +86,7 @@ let testCheckAreaValidityStepwise() =
     let board = CreateBoard()
     let partialPopulateArea = PopulateArea board
     let area = 
-      CreateArea(OuterPosition(Position(RowPos.LEFT, ColPos.UP)))
+      CreateArea(OuterPosition(Position(0, 0)))
       |> partialPopulateArea
 
     let checkedCell = CheckAreaValidity area cell1
@@ -111,6 +112,22 @@ let testCheckAreaValidityStepwise() =
 let testCheckRowValidity() =
     let board = PopulateBoard (CreateBoard()) 
     let checkedCell = CheckRowValidity board cell1
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell2
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell3
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell4
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell5
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell6
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell7
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell8
+    Assert.True(checkedCell.IsNone)
+    let checkedCell = CheckRowValidity board cell9
     Assert.True(checkedCell.IsNone)
     
 
