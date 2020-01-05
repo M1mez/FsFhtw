@@ -31,12 +31,12 @@ let ChangeCellInArea (area: Area, cell: Cell): Area =
         (fun (x: Cell) -> if x.InnerPos = cell.InnerPos then cell, cell.InnerPos else x, x.InnerPos)
     List.map (fst >> func) area
 
-let ChangeAreaInBoard (board: Board, newArea: Area, pos: OuterPosition) = 
+let ChangeAreaInBoard (board: Board, newArea: Area, pos: OuterPosition): Area * Board = 
     let func =
         (fun (x: Area) -> if (fst x.Head).OuterPos = pos then newArea, pos else x, (fst x.Head).OuterPos)
-    List.map (fst >> func) board
+    newArea, (List.map (fst >> func) board)
 
-let ChangeCellInBoard (board: Board, cell: Cell): Board =
+let ChangeCellInAreaAndBoard (board: Board, cell: Cell): Area * Board =
     let area = List.find (fun (x: Area * OuterPosition )-> snd x = cell.OuterPos) board
     let newArea = ChangeCellInArea (fst area, cell)
     ChangeAreaInBoard (board, newArea, cell.OuterPos)
@@ -66,7 +66,7 @@ let PrintBoard(board: Board): Unit =
 
 let CheckRowValidity(board: Board) (cell: Cell): Cell option =
     let lineIndexOfCell = (PositionsToAbsolutePos (cell.InnerPos, cell.OuterPos))
-    let cellList = List.map (fun x -> GetCellFromIndex ((snd lineIndexOfCell) * sudokuSize + x, board)) [0 .. sudokuSize - 1]
+    let cellList = List.map (fun x -> GetCellFromIndex (((fst lineIndexOfCell) * sudokuSize) + x, board)) [0 .. sudokuSize - 1]
 
     printfn "\n\n\nChecking following row: "
     cellList |> Seq.iter(fun x -> printf "%i " (int x.State))
@@ -76,7 +76,7 @@ let CheckRowValidity(board: Board) (cell: Cell): Cell option =
     
 let CheckColValidity(board: Board) (cell: Cell): Cell option =
     let lineIndexOfCell = (PositionsToAbsolutePos (cell.InnerPos, cell.OuterPos))
-    let cellList = List.map (fun x -> GetCellFromIndex ((fst lineIndexOfCell) + x * sudokuSize, board)) [0 .. sudokuSize - 1]
+    let cellList = List.map (fun x -> GetCellFromIndex ((snd lineIndexOfCell) + (x * sudokuSize), board)) [0 .. sudokuSize - 1]
 
     printfn "\n\n\nChecking following row: "
     cellList |> Seq.iter(fun x -> printf "%i " (int x.State))
@@ -84,45 +84,47 @@ let CheckColValidity(board: Board) (cell: Cell): Cell option =
 
     CheckForDuplicate(cellList, cell)
 
-// let CheckDimValidity(board: Board, cell: Cell, dimFunction): Cell option =
-    
-//     let row = (fst cell.OuterPos).ToString()
-//     let col = (snd cell.OuterPos).ToString()
-//     printf "val: %i " (int cell.State)
-//     printf "row: %s " row    
-//     printf "col: %s " col    
+let GetRowWhereCellIsIn(board: Board, cell: Cell, dimFunction): List<Cell> =
+    let rowNum = (fst cell.OuterPos).ToString()
+    let colNum = (snd cell.OuterPos).ToString()
+    printf "val: %i " (int cell.State)
+    printf "row: %s " rowNum    
+    printf "col: %s " colNum 
 
-//     let areaLine =
-//         board
-//         |> List.where (fun (x: Area * OuterPosition) -> (dimFunction (snd x)) = dimFunction cell.OuterPos)
-//         |> List.map fst
+    let areaLine =
+        board
+        |> List.where (fun (x: Area * OuterPosition) -> (dimFunction (snd x)) = dimFunction cell.OuterPos)
+        |> List.map fst
 
-//     let lineIndexOfCell = fst (PositionsToAbsolutePos (cell.InnerPos, cell.OuterPos))
-//     // printfn "index of line: %i" lineIndexOfCell
-//     // printLine board lineIndexOfCell
+    let lineIndexOfCell = fst (PositionsToAbsolutePos (cell.InnerPos, cell.OuterPos))
+    // printfn "index of line: %i" lineIndexOfCell
+    // printLine board lineIndexOfCell
 
-//     let getCellsInLine (area: Area): List<Cell> =
-//         area
-//         |> List.map fst
-//         |> List.where (fun x -> dimFunction x.InnerPos = dimFunction cell.InnerPos)
+    let getCellsInLine (area: Area): List<Cell> =
+        area
+        |> List.map fst
+        |> List.where (fun x -> dimFunction x.InnerPos = dimFunction cell.InnerPos)
 
-//     let cellList =
-//         areaLine
-//         |> List.map getCellsInLine
-//         |> List.collect id
+    let row =
+        areaLine
+        |> List.map getCellsInLine
+        |> List.collect id
+    row
 
-//     // printfn "\n\n\nBoard: "
-//     // PrintBoard board
-//     printf "Cells in area line: "
-//     cellList |> Seq.iter(fun x -> printf "%i " (int x.State))
-//     printfn ""
 
-//     let result = CheckForDuplicate(cellList, cell)
-//     if(result.IsSome) then
-//         printf "Result of one validity check: %i " (int result.Value.State)
-//     else
-//         printf "Result of one validity check: none "
-//     result
+
+let CheckDimValidity(board: Board, cell: Cell, dimFunction): Cell option =
+    let row = GetRowWhereCellIsIn(board, cell, dimFunction)
+    printf "Cells in area line: "
+    row |> Seq.iter(fun x -> printf "%i " (int x.State))
+    printfn ""
+
+    let result = CheckForDuplicate(row, cell)
+    if(result.IsSome) then
+        printf "Result of one validity check: %i " (int result.Value.State)
+    else
+        printf "Result of one validity check: none "
+    result
 
 // let CheckRowValidity (board: Board) (cell: Cell): Cell option = CheckDimValidity(board, cell, fst)
 
@@ -143,17 +145,18 @@ let ChangeCellValue(cell: Cell): Cell =
 //     |> List.map changeArea
 // newArea
 
-let rec fillCell (index: int, board: Board): Cell * Position =
-    let currCell = GetCellFromIndex (index, board)
+let rec fillCell (index: int, area: Area, board: Board): Cell * Position =
+    let pos = IndexToPosition index
+    let currCell = fst (List.find (fun (x: Cell * InnerPosition) -> pos = (fst x).InnerPos) area)
     let cell = 
         Some(ChangeCellValue(currCell)) 
-        // |> bind (CheckAreaValidity area)
+        |> bind (CheckAreaValidity area)
         |> bind (CheckRowValidity board)
-        // |> bind (CheckColValidity board)
+        |> bind (CheckColValidity board)
 
     match cell with
     | Some c -> (c, c.InnerPos)
-    | None -> (fillCell (index, board))
+    | None -> (fillCell (index, area, board))
 
 let PopulateArea (board: Board) (area: Area): Board =
     let updateAreaWithNewCell (index: int, func, area: Area): Area =
@@ -163,22 +166,23 @@ let PopulateArea (board: Board) (area: Area): Board =
             (fun (x: Cell) -> if x.InnerPos = pos then func x else x, x.InnerPos)
         List.map (fst >> changeArea) area
 
-    let rec populateNextCell (index: int) (b: Board): Board =
+    let rec populateNextCell (index: int) (a: Area, b: Board): Board =
         if (index = sudokuSize)
-        then a
-        else ChangeCellInBoard (index, (fillCell (a, b)), a) |> (populateNextCell (index + 1))
+        then b
+        else ChangeCellInAreaAndBoard (b, fst (fillCell(index, a, b))) |> (populateNextCell (index + 1))
 
-    populateNextCell 0 area
+    populateNextCell 0 (area,board)
 
 let PopulateBoard(board: Board): Board =
     let updateBoardWithNewArea (index: int, b: Board): Board = 
         let pos = IndexToPosition index
         let area = fst (List.find (fun (x: Area * OuterPosition) -> snd x = pos) b)
-        PopulateArea board area
+        PopulateArea b area
         
         //ChangeAreaInBoard (b, (PopulateArea b area), pos)
 
     let rec populateNextArea (index: int) (b: Board) =
+        PrintBoard b
         if (index = sudokuSize)
         then b
         else updateBoardWithNewArea (index, b) |> (populateNextArea (index + 1))

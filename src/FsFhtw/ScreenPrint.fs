@@ -38,8 +38,8 @@ let PrintArea2(area: Area) : Unit =
     let cells = List.map(fst) area
     // printf " ---------"
     let printAreaRow(row: List<Cell>) = 
-        printf "\n ---------\n| " 
-        List.iter (fun x -> printf "%i|" (int x.State)) row 
+        printf "\n ---------\n|" 
+        List.iter (fun x -> printf " %i |" (int x.State)) row 
     let getAreaRow(rowIndex: int) = 
         List.where (fun x -> int (fst x.InnerPos) = rowIndex) cells
     [0 .. rootSize - 1]
@@ -50,8 +50,8 @@ let PrintArea2(area: Area) : Unit =
 
 let PrintBoardWithAreasAsRows(board: Board) : Unit =
     let areas = List.map fst board
-    List.iter(PrintArea) areas
-    // List.iter(PrintArea2) areas
+    // List.iter(PrintArea) areas
+    List.iter(PrintArea2) areas
 
 let printLine (board: Board) (line: int) =
         //     List.map (fun x -> (Logic.GetCellFromIndex((x * sudokuSize + line) - 1, board)) |> PrintCellWithPos)

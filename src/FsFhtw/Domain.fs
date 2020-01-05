@@ -2,7 +2,7 @@ module Domain
 
 open System.Diagnostics.CodeAnalysis
 
-let rootSize: int = 3
+let rootSize: int = 2
 let sudokuSize: int = rootSize * rootSize
 
 // type RowPos =
