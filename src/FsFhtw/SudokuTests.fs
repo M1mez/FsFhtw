@@ -57,7 +57,7 @@ module SudokuTest
 
 
 // [<Fact>]
-// let testCheckIsDuplicateValue() =
+// let ``test check is duplicate value``() =
 //     let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7;cell8;cell9]
 //     let result = CheckForDuplicate(cells, cell2)
 //     Assert.True(result.IsNone)
@@ -69,7 +69,7 @@ module SudokuTest
 //     Assert.True(result.IsNone)
 
 // [<Fact>] 
-// let testCheckIsNotDuplicateValue() = 
+// let ``test check is not duplicate value``() = 
 //     let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7]
 
 //     let result = CheckForDuplicate(cells, cell8)
@@ -82,7 +82,7 @@ module SudokuTest
 //     Assert.True(result.IsNone)
 
 // [<Fact>]
-// let testCheckAreaValidityStepwise() = 
+// let ``test area validity stepwise``() = 
 //     let board = CreateBoard()
 //     let partialPopulateArea = PopulateArea board
 //     let area = 
@@ -109,7 +109,7 @@ module SudokuTest
 //     Assert.True(checkedCell.IsNone)
 
 // [<Fact>]
-// let testCheckRowValidity() =
+// let ``test check row validity``() =
 //     let board = PopulateBoard (CreateBoard()) 
 //     let checkedCell = CheckRowValidity board cell1
 //     Assert.True(checkedCell.IsNone)
