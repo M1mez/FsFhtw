@@ -15,14 +15,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Domain.fs" />
+    <Compile Include="Constants.fs" />
     <Compile Include="HelperFunctions.fs" />
-    <Compile Include="CreateLogic.fs" />
-    <Compile Include="Logic.fs" />
+    <Compile Include="Domain.fs" />
+    <Compile Include="FileHandler.fs" />
     <Compile Include="ScreenPrint.fs" />
-    <Compile Include="UserInteraction.fs" />
     <Compile Include="SudokuTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+
+  <!-- <ItemGroup>
+    <Compile Include="zOldDomain.fs" />
+    <Compile Include="zOldHelperFunctions.fs" />
+    <Compile Include="zOldCreateLogic.fs" />
+    <Compile Include="zOldLogic.fs" />
+    <Compile Include="zOldScreenPrint.fs" />
+    <Compile Include="UserInteraction.fs" />
+    <Compile Include="SudokuTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup> -->
   
 </Project>

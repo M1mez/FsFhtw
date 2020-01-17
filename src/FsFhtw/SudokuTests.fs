@@ -1,5 +1,6 @@
 module SudokuTest
 
+
 // // open Swensen.Unquote
 // open FsUnit.Xunit
 // open Xunit
@@ -57,7 +58,7 @@ module SudokuTest
 
 
 // [<Fact>]
-// let ``test check is duplicate value``() =
+// let ``That check is duplicate value``() =
 //     let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7;cell8;cell9]
 //     let result = CheckForDuplicate(cells, cell2)
 //     Assert.True(result.IsNone)
@@ -68,8 +69,8 @@ module SudokuTest
 //     let result = CheckForDuplicate(cells, cell9)
 //     Assert.True(result.IsNone)
 
-// [<Fact>] 
-// let ``test check is not duplicate value``() = 
+// [<Fact>]
+// let ``test check is not duplicate value``() =
 //     let cells = [ cell1; cell2; cell3;cell4;cell5;cell6;cell7]
 
 //     let result = CheckForDuplicate(cells, cell8)
@@ -82,10 +83,10 @@ module SudokuTest
 //     Assert.True(result.IsNone)
 
 // [<Fact>]
-// let ``test area validity stepwise``() = 
+// let ``test area validity stepwise``() =
 //     let board = CreateBoard()
 //     let partialPopulateArea = PopulateArea board
-//     let area = 
+//     let area =
 //       CreateArea(OuterPosition(Position(0, 0)))
 //       |> partialPopulateArea
 
@@ -110,7 +111,7 @@ module SudokuTest
 
 // [<Fact>]
 // let ``test check row validity``() =
-//     let board = PopulateBoard (CreateBoard()) 
+//     let board = PopulateBoard (CreateBoard())
 //     let checkedCell = CheckRowValidity board cell1
 //     Assert.True(checkedCell.IsNone)
 //     let checkedCell = CheckRowValidity board cell2
@@ -129,7 +130,7 @@ module SudokuTest
 //     Assert.True(checkedCell.IsNone)
 //     let checkedCell = CheckRowValidity board cell9
 //     Assert.True(checkedCell.IsNone)
-    
+
 
 
 

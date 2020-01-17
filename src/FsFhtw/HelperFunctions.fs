@@ -1,36 +1,45 @@
 module HelperFunctions
 
+
 open System
-open Domain
 
-let rnd = Random()
+let intPow (a: int, b: int): int = (float a) ** (float b) |> int
 
-let bind nextFunction (optionInput: 'a option): 'a option =
-    match optionInput with
-    | Some s -> nextFunction s
-    | None -> None
+// let seqToArray2D<'a> (seq: seq<'a>): 'a [,] =
+//     let dimSize =
+//         Math.Sqrt
+//             ((seq
+//               |> Seq.length
+//               |> float))
+//         |> int
 
-let GenerateRandomIntInRange(upper: int): int = rnd.Next(upper) + 1
+//     let maxLength = dimSize * dimSize
 
-let IndexToPosition(i: int): Position = Position((i / rootSize), (i % rootSize))
+//     [ 0 .. dimSize - 1 ]
+//     |> Array.map (fun x -> seq.[(x * dimSize)..((x + 1) * dimSize)])
+//     |> array2D
 
-let IndexToAbsolutePosition(index: int): OuterPosition * InnerPosition =
-    let absolutePos = index / sudokuSize, index % sudokuSize
-    let outerPos: OuterPosition = ((fst absolutePos) / rootSize), ((snd absolutePos) / rootSize)
-    let innerPos: InnerPosition = ((fst absolutePos) % rootSize), ((snd absolutePos) % rootSize)
-    outerPos, innerPos
 
-let PositionsToAbsolutePos(inner: InnerPosition, outer: OuterPosition): int * int =
-    let row = (int (fst outer) + 1) * rootSize + (int (fst inner)) - rootSize
-    let col = (int (snd outer) + 1) * rootSize + (int (snd inner)) - rootSize
-    row, col
+// let dimSize =
+//     Math.Sqrt
+//         ((seq
+//           |> Seq.length
+//           |> float))
+//     |> int
 
-let GetCellFromIndex(index: int, board: Board): Cell =
-    let absolutePos = IndexToAbsolutePosition index
-    let outerPos = fst absolutePos
-    let innerPos = snd absolutePos
+// let maxLength = dimSize * dimSize
+// if (Seq.length seq <> maxLength) then
+//     failwithf "Can't convert to 2d Array, no perfect square: %i" (Seq.length seq)
+// let rec buildArray2DRec (array: 'a [,], index: int): 'a [,] =
+//     if (index = maxLength) then
+//         array
+//     else
+//         let row, col = index / dimSize, index % dimSize
 
-    let area = List.find (fun x -> snd x = outerPos) board
-    let cell = List.find (fun x -> snd x = innerPos) (fst area)
-
-    fst cell
+//         let newArray: 'a [,] =
+//             array
+//             |> Array2D.mapi (function
+//                 | row -> fun _ -> seq.[index]
+//                 | _ -> id)
+//         buildArray2DRec (newArray, index + 1)
+// buildArray2DRec ((Array2D.zeroCreate dimSize dimSize), 0)
