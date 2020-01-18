@@ -13,11 +13,11 @@ let GetInnerPosFromAbsolutePos(pos: int * int): int * int =
 let GetBoardCellCol(board: Board, colNumber: int): seq<Cell> = GetColFromArray2D colNumber board
 let GetBoardCellRow(board: Board, rowNumber: int): seq<Cell> = GetRowFromArray2D rowNumber board
 
-let GetAreaOfCellByAbsPos(board: Board, absolutePos: Position) =
+let GetAreaOfCellByAbsPos(board: Board, absolutePos: Position): Cell [,] =
     let areaOriginPosX = (fst absolutePos) - ((fst absolutePos) % Constants.ROOT_SIZE)
     let areaOriginPosY = (snd absolutePos) - ((snd absolutePos) % Constants.ROOT_SIZE)
     board.[areaOriginPosX..areaOriginPosX + Constants.ROOT_SIZE - 1, areaOriginPosY..areaOriginPosY
                                                                                      + Constants.ROOT_SIZE - 1]
 
-let GetAreaOfCellByAbsIndex(board: Board, absoluteIndex: int) =
+let GetAreaOfCellByAbsIndex(board: Board, absoluteIndex: int): Cell [,] =
     GetAreaOfCellByAbsPos(board, (IndexToPosition(absoluteIndex, Constants.ROOT_SIZE)))

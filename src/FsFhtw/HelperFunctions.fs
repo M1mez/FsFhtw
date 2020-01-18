@@ -20,7 +20,12 @@ let SeqToArray2D<'a>(seq: seq<'a>): 'a [,] =
 let GetRangeFromSequence<'a>(seq: seq<'a>, lower: int, amount: int): seq<'a> =
     (Seq.skip lower >> Seq.take amount) seq
 
-let private flatten (A: 'a [,]) = A |> Seq.cast<'a>
+let Flatten(A: 'a [,]) = A |> Seq.cast<'a>
 
-let GetRowFromArray2D<'a> (row: int) (array: 'a [,]): seq<'a> = flatten array.[row..row, *]
-let GetColFromArray2D<'a> (col: int) (array: 'a [,]): seq<'a> = flatten array.[*, col..col]
+let GetRowFromArray2D<'a> (row: int) (array: 'a [,]): seq<'a> = Flatten array.[row..row, *]
+let GetColFromArray2D<'a> (col: int) (array: 'a [,]): seq<'a> = Flatten array.[*, col..col]
+
+let Bind nextFunction (optionInput: 'a option): 'a option =
+    match optionInput with
+    | Some s -> nextFunction s
+    | None -> None

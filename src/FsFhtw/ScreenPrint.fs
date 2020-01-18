@@ -9,6 +9,8 @@ type BorderType =
     | MIDDLE
     | LOWER
 
+let offset = String.replicate 5 " "
+
 let private printCellRow (cells: seq<Cell>): Unit =
     let printCell (cell: Cell) =
         match cell with
@@ -36,11 +38,11 @@ let private printVerticalBorder (borderType: BorderType) =
         | BorderType.MIDDLE -> '╣'
         | BorderType.LOWER -> '╝'
 
-    printfn "  %c═══════%c═══════%c═══════%c" left middle middle right
+    printfn "%s  %c═══════%c═══════%c═══════%c" offset left middle middle right
 
 let private printCompleteCellRow (cells: seq<Cell>) (rowIndex: int): Unit =
     let indexRootSize = Constants.ROOT_SIZE - 1
-    printf "%i ║" (rowIndex + 1)
+    printf "%s%i ║" offset (rowIndex + 1)
     let printPartCellRow (cellsPart: seq<Cell>): Unit =
         printCellRow cellsPart
         printf " ║"
@@ -56,6 +58,6 @@ let private printAreaRow (board: Board) (areaRowIndex: int): Unit =
     |> Seq.iter (fun rowIndex -> printCompleteCellRow (GetBoardCellRow(board, rowIndex)) rowIndex)
 
 let PrintBoard(board: Board): Unit =
-    printfn "    1 2 3   4 5 6   7 8 9"
+    printfn "%s    1 2 3   4 5 6   7 8 9" offset
     [ 0 .. Constants.ROOT_SIZE - 1 ] |> Seq.iter (printAreaRow board)
     printVerticalBorder (BorderType.LOWER)

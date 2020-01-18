@@ -19,8 +19,10 @@
     <Compile Include="HelperFunctions.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="DomainHelperFunctions.fs" />
+    <Compile Include="Logic.fs" />
     <Compile Include="FileHandler.fs" />
     <Compile Include="ScreenPrint.fs" />
+    <Compile Include="UserInteraction.fs" />
     <Compile Include="SudokuTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
