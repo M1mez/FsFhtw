@@ -3,7 +3,7 @@ module Domain
 
 type Path = string
 
-type RawSudoku = seq<int>
+type Position = int * int
 
 type CellState =
     | One = 1
@@ -19,6 +19,4 @@ type CellState =
 
 type Cell = CellState
 
-type Area = Cell [,]
-
-type Sudoku = Area [,]
+type Board = Cell [,]

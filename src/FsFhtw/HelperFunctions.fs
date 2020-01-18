@@ -3,43 +3,24 @@ module HelperFunctions
 
 open System
 
-let intPow (a: int, b: int): int = (float a) ** (float b) |> int
+let IntPow(a: int, b: int): int = (float a) ** (float b) |> int
 
-// let seqToArray2D<'a> (seq: seq<'a>): 'a [,] =
-//     let dimSize =
-//         Math.Sqrt
-//             ((seq
-//               |> Seq.length
-//               |> float))
-//         |> int
+let SeqToArray2D<'a>(seq: seq<'a>): 'a [,] =
+    let dimSize = Math.Sqrt((Seq.length >> float) seq) |> int
+    if (Seq.length seq <> dimSize * dimSize) then
+        failwithf "Can't convert to 2d Array, no perfect square: %i" (Seq.length seq)
 
-//     let maxLength = dimSize * dimSize
+    [ 0 .. dimSize - 1 ]
+    |> Seq.map (fun x ->
+        seq
+        |> Seq.skip (x * dimSize)
+        |> Seq.take dimSize)
+    |> array2D
 
-//     [ 0 .. dimSize - 1 ]
-//     |> Array.map (fun x -> seq.[(x * dimSize)..((x + 1) * dimSize)])
-//     |> array2D
+let GetRangeFromSequence<'a>(seq: seq<'a>, lower: int, amount: int): seq<'a> =
+    (Seq.skip lower >> Seq.take amount) seq
 
+let private flatten (A: 'a [,]) = A |> Seq.cast<'a>
 
-// let dimSize =
-//     Math.Sqrt
-//         ((seq
-//           |> Seq.length
-//           |> float))
-//     |> int
-
-// let maxLength = dimSize * dimSize
-// if (Seq.length seq <> maxLength) then
-//     failwithf "Can't convert to 2d Array, no perfect square: %i" (Seq.length seq)
-// let rec buildArray2DRec (array: 'a [,], index: int): 'a [,] =
-//     if (index = maxLength) then
-//         array
-//     else
-//         let row, col = index / dimSize, index % dimSize
-
-//         let newArray: 'a [,] =
-//             array
-//             |> Array2D.mapi (function
-//                 | row -> fun _ -> seq.[index]
-//                 | _ -> id)
-//         buildArray2DRec (newArray, index + 1)
-// buildArray2DRec ((Array2D.zeroCreate dimSize dimSize), 0)
+let GetRowFromArray2D<'a> (row: int) (array: 'a [,]): seq<'a> = flatten array.[row..row, *]
+let GetColFromArray2D<'a> (col: int) (array: 'a [,]): seq<'a> = flatten array.[*, col..col]

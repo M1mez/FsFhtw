@@ -6,21 +6,20 @@ open System.Collections
 open Domain
 open HelperFunctions
 
-
-let stringToCellSeq (str: string): seq<Cell> =
+let private stringToCellSeq (str: string): seq<Cell> =
     if (str.Length <> Constants.ALL_CELLS_SUM) then failwithf "string wrong size: %i" str.Length
-    let cellSeq =
-        Seq.map
-            (Char.GetNumericValue
-             >> int
-             >> enum) str
-    cellSeq
+    let charToEnum =
+        (Char.GetNumericValue
+         >> int
+         >> enum)
+    Seq.map charToEnum str
 
-let extractAreaFromCellSeq (seq: seq<Cell>): Area option =
-    if (Seq.length seq <> Constants.SUDOKU_SIZE) then failwithf "Cell Sequence wrong size: %i" (Seq.length seq)
-    None
+let private extractBoardFromCellSeq (seq: seq<Cell>): Board =
+    if (Seq.length seq <> Constants.ALL_CELLS_SUM) then
+        failwithf "Cell Sequence wrong size for Board: %i" (Seq.length seq)
+    SeqToArray2D seq
 
-// let readSudoku(path: Path): List<RawSudoku> =
-//     Seq.toList (File.ReadLines(path))
-
-// let ReadSudoku
+let ReadSudoku(path: Path): List<Board> =
+    let sudokuStringList = File.ReadLines(path) |> Seq.toList
+    let cellSequenceList = sudokuStringList |> List.map stringToCellSeq
+    cellSequenceList |> List.map extractBoardFromCellSeq

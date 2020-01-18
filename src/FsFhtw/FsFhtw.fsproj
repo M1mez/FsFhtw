@@ -18,6 +18,7 @@
     <Compile Include="Constants.fs" />
     <Compile Include="HelperFunctions.fs" />
     <Compile Include="Domain.fs" />
+    <Compile Include="DomainHelperFunctions.fs" />
     <Compile Include="FileHandler.fs" />
     <Compile Include="ScreenPrint.fs" />
     <Compile Include="SudokuTests.fs" />
